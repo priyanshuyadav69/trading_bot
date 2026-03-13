@@ -33,8 +33,3 @@ python cli.py --symbol BTCUSDT --side SELL --order_type LIMIT --quantity 0.001 -
 - Error handling
 - Input validation
 
-## Assumptions
-
-Uses Binance Futures USDT-M Testnet.
-
-API credentials must be created from Binance Testnet portal.
