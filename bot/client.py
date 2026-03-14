@@ -7,7 +7,7 @@ load_dotenv()
 API_KEY = os.getenv("BINANCE_API_KEY")
 API_SECRET = os.getenv("BINANCE_API_SECRET")
 
-print("API KEY:", API_KEY)
+
 
 def get_client():
     client = Client(API_KEY, API_SECRET)

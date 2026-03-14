@@ -11,8 +11,9 @@ setup_logger()
 @click.option("--order_type","order_type", required=True, help="MARKET or LIMIT")
 @click.option("--quantity", required=True, type=float)
 @click.option("--price", type=float)
+@click.option("--stop_price", type=float)
 
-def main(symbol, side, order_type, quantity, price):
+def main(symbol, side, order_type, quantity, price ,stop_price):
 
     try:
         side = validate_side(side)
@@ -23,6 +24,14 @@ def main(symbol, side, order_type, quantity, price):
             if price is None:
                 raise ValueError("LIMIT orders require price")
 
+        if order_type == "STOP_LIMIT":                          
+            if price is None:
+                raise ValueError("STOP_LIMIT orders require --price (the limit execution price)")
+            if stop_price is None:
+                raise ValueError("STOP_LIMIT orders require --stop_price (the trigger price)")
+            if stop_price == price:
+                raise ValueError("--stop_price and --price must be different values")
+
         print("\nOrder Request Summary")
         print("----------------------")
         print("Symbol:", symbol)
@@ -30,8 +39,11 @@ def main(symbol, side, order_type, quantity, price):
         print("Type:", order_type)
         print("Quantity:", quantity)
         print("Price:", price)
+        print("Stop Price:", stop_price) 
 
-        order = place_order(symbol, side, order_type, quantity, price)
+        order = place_order(symbol, side, order_type, quantity, price , stop_price)
+
+
 
         print("\nOrder Response")
         print("----------------------")
@@ -43,7 +55,12 @@ def main(symbol, side, order_type, quantity, price):
         print("\nOrder placed successfully")
 
     except Exception as e:
-        print("\nError:", str(e))
+        msg = str(e)
+        if "4164" in msg:
+            print("\nError: Order value too small. Quantity × Price must be at least $100.")
+            print("Tip: Increase your --quantity and try again.")
+        else:
+            print("\nError:", msg)
 
 
 if __name__ == "__main__":

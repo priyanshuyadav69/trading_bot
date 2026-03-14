@@ -4,7 +4,7 @@ def validate_side(side):
     return side.upper()
 
 def validate_order_type(order_type):
-    if order_type.upper() not in ["MARKET", "LIMIT"]:
+    if order_type.upper() not in ["MARKET", "LIMIT","STOP_LIMIT"]:
         raise ValueError("Order type must be MARKET or LIMIT")
     return order_type.upper()
 

@@ -1,7 +1,7 @@
 import logging
 from .client import get_client
 
-def place_order(symbol, side, order_type, quantity, price=None):
+def place_order(symbol, side, order_type, quantity, price=None , stop_price=None):
 
     client = get_client()
 
@@ -27,6 +27,17 @@ def place_order(symbol, side, order_type, quantity, price=None):
                 price=price,
                 timeInForce="GTC"
             )
+        
+        elif order_type == "STOP_LIMIT":
+            order = client.futures_create_order(
+                symbol=symbol,
+                side=side,
+                type="STOP",
+                quantity=quantity,
+                price=price,
+                stopPrice=stop_price,
+                timeInForce="GTC"
+            )   
         
         
 
